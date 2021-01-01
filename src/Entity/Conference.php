@@ -114,4 +114,9 @@ class Conference
 
         return $this;
     }
+
+    public function getCommentCount(): int
+    {
+        return $this->comments->count();
+    }
 }
