@@ -13,11 +13,17 @@ use Twig\Environment;
 
 class ConferenceController extends AbstractController
 {
+    private $twig;
+
+    public function __construct(Environment $twig) {
+        $this->twig = $twig;
+    }
+
     /**
      * @Route("/", name="homepage")
      */
-    public function index(Environment $twig, ConferenceRepository $repository): Response {
-        return new Response($twig->render(
+    public function index(ConferenceRepository $repository): Response {
+        return new Response($this->twig->render(
             'conference/index.html.twig', [
                 'conferences' => $repository->findAll()
             ]
@@ -29,14 +35,13 @@ class ConferenceController extends AbstractController
      */
     public function show(
         Request $request,
-        Environment $twig,
         Conference $conference,
         CommentRepository $repository
     ): Response {
         $offset = max(0, $request->query->getInt('offset', 0));
         $paginator = $repository->getCommentPaginator($conference, $offset);
 
-        return new Response($twig->render(
+        return new Response($this->twig->render(
             'conference/show.html.twig', [
                 'conference' => $conference,
                 'comments' => $paginator,
