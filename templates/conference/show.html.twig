@@ -15,7 +15,7 @@
                 {{ comment.createdAt|format_datetime('medium', 'short') }}
             </small>
 
-            <p>{{ comment.text }}</p>
+            <p>{{ comment.text|raw }}</p>
         {% endfor %}
     {% else %}
         <div>No comments have been posted yet for this conference.</div>
