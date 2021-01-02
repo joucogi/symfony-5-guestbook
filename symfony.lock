@@ -414,6 +414,9 @@
             "templates/base.html.twig"
         ]
     },
+    "symfony/twig-pack": {
+        "version": "v1.0.1"
+    },
     "symfony/uid": {
         "version": "v5.1.10"
     },
@@ -439,6 +442,9 @@
     },
     "symfony/yaml": {
         "version": "v5.0.11"
+    },
+    "twig/extra-bundle": {
+        "version": "v3.1.1"
     },
     "twig/twig": {
         "version": "v3.1.1"
