@@ -24,7 +24,7 @@ class ConferenceController extends AbstractController
     }
 
     /**
-     * @Route("/conference/{id}", name="conference")
+     * @Route("/conferences/{id}", name="conference")
      */
     public function show(Environment $twig, Conference $conference, CommentRepository $repository): Response {
         return new Response($twig->render(
