@@ -119,4 +119,8 @@ class Conference
     {
         return $this->comments->count();
     }
+
+    public function __toString(): string {
+        return sprintf('%s %s', $this->city, $this->year);
+    }
 }

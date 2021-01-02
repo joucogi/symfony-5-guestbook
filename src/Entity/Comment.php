@@ -33,7 +33,10 @@ class Comment
     private $email;
 
     /**
+     * @var \DateTime
      * @ORM\Column(type="datetime")
+     * @Gedmo\Mapping\Annotation\Timestampable(on="create")
+     * @Doctrine\ORM\Mapping\Column(type="datetime")
      */
     private $createdAt;
 
@@ -123,5 +126,9 @@ class Comment
         $this->photoFilename = $photoFilename;
 
         return $this;
+    }
+
+    public function __toString(): string {
+        return $this->getEmail();
     }
 }
