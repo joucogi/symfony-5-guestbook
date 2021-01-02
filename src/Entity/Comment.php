@@ -3,10 +3,13 @@
 namespace App\Entity;
 
 use App\Repository\CommentRepository;
+use DateTime;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=CommentRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class Comment
 {
@@ -33,9 +36,8 @@ class Comment
     private $email;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      * @ORM\Column(type="datetime")
-     * @Gedmo\Mapping\Annotation\Timestampable(on="create")
      * @Doctrine\ORM\Mapping\Column(type="datetime")
      */
     private $createdAt;
@@ -92,16 +94,23 @@ class Comment
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): ?DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    public function setCreatedAt(DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
 
         return $this;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function setCreatedAtValue(): void {
+        $this->createdAt = new DateTime();
     }
 
     public function getConference(): ?Conference
