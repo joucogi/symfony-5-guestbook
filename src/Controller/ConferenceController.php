@@ -27,7 +27,7 @@ class ConferenceController extends AbstractController
     }
 
     /**
-     * @Route("/conferences/{id}", name="conference")
+     * @Route("/conferences/{slug}", name="conference")
      */
     public function show(
         Request $request,
