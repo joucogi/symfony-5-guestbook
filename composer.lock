@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e4927f24925fe3d226589517ae4371aa",
+    "content-hash": "bc83d0092f9f954ba333c9d72dca4197",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -7031,6 +7031,85 @@
                 }
             ],
             "time": "2020-10-28T21:31:18+00:00"
+        },
+        {
+            "name": "symfony/workflow",
+            "version": "v5.1.10",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/workflow.git",
+                "reference": "9c4f7023e7979d5f568c057d0b05656e9fa6d076"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/workflow/zipball/9c4f7023e7979d5f568c057d0b05656e9fa6d076",
+                "reference": "9c4f7023e7979d5f568c057d0b05656e9fa6d076",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.5",
+                "symfony/polyfill-php80": "^1.15"
+            },
+            "conflict": {
+                "symfony/event-dispatcher": "<4.4"
+            },
+            "require-dev": {
+                "psr/log": "~1.0",
+                "symfony/dependency-injection": "^4.4|^5.0",
+                "symfony/event-dispatcher": "^4.4|^5.0",
+                "symfony/expression-language": "^4.4|^5.0",
+                "symfony/security-core": "^4.4|^5.0",
+                "symfony/validator": "^4.4|^5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Workflow\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Grégoire Pineau",
+                    "email": "lyrixx@lyrixx.info"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Workflow Component",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "petrinet",
+                "place",
+                "state",
+                "statemachine",
+                "transition",
+                "workflow"
+            ],
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2020-12-08T17:02:38+00:00"
         },
         {
             "name": "symfony/yaml",
