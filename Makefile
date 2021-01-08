@@ -43,6 +43,10 @@ workflow_dump:
 	$(call echo_title,"Dump workflow - paste the code in https://dreampuf.github.io/GraphvizOnline to show the graph")
 	@symfony console workflow:dump comment
 
+load_fixtures:
+	$(call echo_title,Load fixtures to database)
+	@symfony console doctrine:fixtures:load
+
 status:
 	$(call echo_title,Show status)
 	@symfony server:status
