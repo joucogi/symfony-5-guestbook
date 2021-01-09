@@ -10,6 +10,8 @@ start: start-docker start-server start-worker
 
 stop: stop-server-docker stop-docker
 
+restart: stop start
+
 start-docker:
 	$(call echo_title,Start Docker containers)
 	@docker-compose up -d
