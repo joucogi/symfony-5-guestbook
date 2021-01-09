@@ -65,12 +65,13 @@ final class CommentMessageHandler implements MessageHandlerInterface {
             $this->bus->dispatch($message);
 
         } else if ($this->workflow->can($comment, 'publish') || $this->workflow->can($comment, 'publish_ham')) {
-            $this->mailer->send((new NotificationEmail()))
-                         ->subject('New comment posted')
-                         ->htmlTemplate('emails/comment_notification.html.twig')
-                         ->from($this->adminEmail)
-                         ->to($this->adminEmail)
-                         ->context(['comment' => $comment]);
+            $this->mailer->send(
+                (new NotificationEmail())->subject('New comment posted')
+                                         ->htmlTemplate('emails/comment_notification.html.twig')
+                                         ->from($this->adminEmail)
+                                         ->to($this->adminEmail)
+                                         ->context(['comment' => $comment])
+            );
 
         } else if ($this->logger) {
             $this->logger->debug('Dropping comment message',
