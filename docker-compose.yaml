@@ -20,3 +20,10 @@ services:
   mailcatcher:
     image: schickling/mailcatcher
     ports: [1025, 1080]
+
+  pgadmin:
+    image: dpage/pgadmin4
+    ports: [80]
+    environment:
+      PGADMIN_DEFAULT_EMAIL: joel.coll@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: main
