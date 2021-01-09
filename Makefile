@@ -8,7 +8,7 @@ tests:
 
 start: start-docker start-server start-worker
 
-stop: stop-server-docker stop-docker
+stop: stop-server-worker stop-docker
 
 restart: stop start
 
@@ -29,27 +29,27 @@ start-worker:
 	@sleep 2
 	@symfony run -d --watch=config,src,templates,vendor symfony console messenger:consume async
 
-stop-server-docker:
+stop-server-worker:
 	$(call echo_title,Stop Workers and Web server)
 	@symfony server:stop
 
-message_failed_show:
+message-failed-show:
 	$(call echo_title,Inspect failed messages)
 	@symfony console messenger:failed:show
 
-message_failed_retry:
+message-failed-retry:
 	$(call echo_title,Retry failed messages)
 	@symfony console messenger:failed:retry
 
-workflow_dump:
+workflow-dump:
 	$(call echo_title,"Dump workflow - paste the code in https://dreampuf.github.io/GraphvizOnline to show the graph")
 	@symfony console workflow:dump comment
 
-load_fixtures:
+load-fixtures:
 	$(call echo_title,Load fixtures to database)
 	@symfony console doctrine:fixtures:load
 
-connect_db:
+connect-db:
 	$(call echo_title,Connect to database)
 	@docker exec -it guestbook_database_1 psql -U main -W main
 
