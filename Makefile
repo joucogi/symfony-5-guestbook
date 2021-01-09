@@ -49,6 +49,10 @@ load_fixtures:
 	$(call echo_title,Load fixtures to database)
 	@symfony console doctrine:fixtures:load
 
+connect_db:
+	$(call echo_title,Connect to database)
+	@docker exec -it guestbook_database_1 psql -U main -W main
+
 status:
 	$(call echo_title,Show status)
 	@symfony server:status
