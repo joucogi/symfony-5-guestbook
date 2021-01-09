@@ -19,7 +19,7 @@ services:
 
   mailcatcher:
     image: schickling/mailcatcher
-    ports: [1025, 1080]
+    ports: ["55052:1025", 1080]
 
   pgadmin:
     image: dpage/pgadmin4
