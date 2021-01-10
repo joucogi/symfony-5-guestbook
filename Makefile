@@ -61,6 +61,10 @@ log:
 	$(call echo_title,Show logs)
 	@symfony server:log
 
+purging-cache:
+	$(call echo_title,Purging HTTP Cache)
+	@rm -rf var/cache/dev/http_cache
+
 ##############
 ### FUNCTIONS
 ##############
