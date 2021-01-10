@@ -61,9 +61,29 @@ log:
 	$(call echo_title,Show logs)
 	@symfony server:log
 
-purging-cache:
-	$(call echo_title,Purging HTTP Cache)
+purge-cache: remove-cache purge-cache-home purge-cache-header
+
+purge-cache-home:
+	$(call echo_title,Purging cache home)
+	@curl -I -X PURGE -u admin:admin `symfony var:export SYMFONY_DEFAULT_ROUTE_URL`admin/http-cache/
+
+purge-cache-header:
+	$(call echo_title,Purging cache header)
+	@curl -I -X PURGE -u admin:admin `symfony var:export SYMFONY_DEFAULT_ROUTE_URL`admin/http-cache/conference/header
+
+remove-cache:
+	$(call echo_title,Removing HTTP Cache)
 	@rm -rf var/cache/dev/http_cache
+
+
+compile-assets:
+	$(call echo_title,Compiling assets)
+	@symfony run yarn encore dev
+
+compile-watch-assets:
+	$(call echo_title,Compiling assets)
+	@symfony run -d yarn encore dev --watch
+
 
 ##############
 ### FUNCTIONS
