@@ -14,12 +14,16 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Notifier\Message\ChatMessage;
 use Symfony\Component\Notifier\Notification\Notification;
 use Symfony\Component\Notifier\NotifierInterface;
+use Symfony\Component\Notifier\Recipient\Recipient;
+use Symfony\Component\Notifier\Transport;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGenerator;
 use Twig\Environment;
 
-class ConferenceController extends AbstractController {
+final class ConferenceController extends AbstractController {
     private $twig;
     private $entityManager;
     private $bus;
@@ -33,7 +37,7 @@ class ConferenceController extends AbstractController {
     /**
      * @Route("/", name="homepage")
      */
-    public function index(): Response {
+    public function index(NotifierInterface $notifier): Response {
         $response = new Response($this->twig->render('conference/index.html.twig'));
         $response->setSharedMaxAge(3600);
 
@@ -89,7 +93,12 @@ class ConferenceController extends AbstractController {
                 'permalink'  => $request->getUri()
             ];
 
-            $this->bus->dispatch(new CommentMessage($comment->getId(), $context));
+            $reviewUrl = $this->generateUrl(
+                'review_comment',
+                ['id' => $comment->getId()],
+                UrlGenerator::ABSOLUTE_PATH
+            );
+            $this->bus->dispatch(new CommentMessage($comment->getId(), $reviewUrl, $context));
 
             $notifier->send(new Notification('Thank you for the feedback; your comment will be posted after moderation', ['browser']));
 
