@@ -58,7 +58,7 @@ final class AdminController extends AbstractController {
             $reviewUrl = $this->generateUrl(
                 'review_comment',
                 ['id' => $comment->getId()],
-                UrlGenerator::ABSOLUTE_PATH
+                UrlGenerator::ABSOLUTE_URL
             );
             $this->bus->dispatch(
                 new CommentMessage($comment->getId(), $reviewUrl)

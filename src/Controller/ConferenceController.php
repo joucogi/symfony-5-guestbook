@@ -9,11 +9,13 @@ use App\Message\CommentMessage;
 use App\Repository\CommentRepository;
 use App\Repository\ConferenceRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Notifier\ChatterInterface;
 use Symfony\Component\Notifier\Message\ChatMessage;
 use Symfony\Component\Notifier\Notification\Notification;
 use Symfony\Component\Notifier\NotifierInterface;
@@ -37,7 +39,7 @@ final class ConferenceController extends AbstractController {
     /**
      * @Route("/", name="homepage")
      */
-    public function index(NotifierInterface $notifier): Response {
+    public function index(ChatterInterface $chatter): Response {
         $response = new Response($this->twig->render('conference/index.html.twig'));
         $response->setSharedMaxAge(3600);
 
@@ -64,7 +66,8 @@ final class ConferenceController extends AbstractController {
         Conference $conference,
         CommentRepository $commentRepository,
         NotifierInterface $notifier,
-        string $photoDir
+        string $photoDir,
+        LoggerInterface $logger = null
     ): Response {
         $comment = new Comment();
         $form    = $this->createForm(CommentFormType::class, $comment);
@@ -96,8 +99,14 @@ final class ConferenceController extends AbstractController {
             $reviewUrl = $this->generateUrl(
                 'review_comment',
                 ['id' => $comment->getId()],
-                UrlGenerator::ABSOLUTE_PATH
+                UrlGenerator::ABSOLUTE_URL
             );
+
+            $logger->debug('Comment SENDED',
+                [
+                    'url' => $reviewUrl
+                ]);
+
             $this->bus->dispatch(new CommentMessage($comment->getId(), $reviewUrl, $context));
 
             $notifier->send(new Notification('Thank you for the feedback; your comment will be posted after moderation', ['browser']));

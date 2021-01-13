@@ -14,35 +14,25 @@ use Symfony\Component\Notifier\Message\EmailMessage;
 use Symfony\Component\Notifier\Notification\ChatNotificationInterface;
 use Symfony\Component\Notifier\Notification\EmailNotificationInterface;
 use Symfony\Component\Notifier\Notification\Notification;
-use Symfony\Component\Notifier\Recipient\Recipient;
+use Symfony\Component\Notifier\Recipient\EmailRecipientInterface;
+use Symfony\Component\Notifier\Recipient\RecipientInterface;
 
 final class CommentReviewNotification
     extends Notification
-    implements EmailNotificationInterface, ChatNotificationInterface
-{
+    implements EmailNotificationInterface, ChatNotificationInterface {
     private $comment;
     private $reviewUrl;
 
     public function __construct(Comment $comment, string $reviewUrl) {
-        $this->comment = $comment;
+        $this->comment   = $comment;
         $this->reviewUrl = $reviewUrl;
 
         parent::__construct('New comment posted');
     }
 
-    public function asEmailMessage(Recipient $recipient, string $transport = null): ?EmailMessage {
-        $message = EmailMessage::fromNotification($this, $recipient, $transport);
-        $message->getMessage()
-                ->htmlTemplate('emails/comment_notification.html.twig')
-                ->context(['comment' => $this->comment]);
-
-        return $message;
-    }
-
-    public function getChannels(Recipient $recipient): array {
+    public function getChannels(RecipientInterface $recipient): array {
         if (preg_match('{\b(great|awesome)\b}i', $this->comment->getText())) {
-            //return ['email', 'chat/slack'];
-            return ['chat/slack'];
+            return ['email', 'chat/slack'];
         }
 
         $this->importance(Notification::IMPORTANCE_LOW);
@@ -50,15 +40,15 @@ final class CommentReviewNotification
         return ['email'];
     }
 
-    public function asChatMessage(Recipient $recipient, string $transport = null): ?ChatMessage {
+    public function asChatMessage(RecipientInterface $recipient, string $transport = null): ?ChatMessage {
         if ('slack' !== $transport) {
             return null;
         }
-        
-        $message = ChatMessage::fromNotification($this, $recipient, $transport);
+
+        $message = ChatMessage::fromNotification($this);
         $message->subject($this->getSubject());
         $message->options((new SlackOptions())
-            ->iconEmoji('tada')
+            ->iconEmoji('money')
             ->iconUrl('https://guestbook.example.com')
             ->username('Guestbook')
             ->block((new SlackSectionBlock())->text($this->getSubject()))
@@ -71,9 +61,18 @@ final class CommentReviewNotification
             )
             ->block((new SlackActionsBlock())
                 ->button('Accept', $this->reviewUrl, 'primary')
-                ->button('Reject', $this->reviewUrl.'?reject=1', 'danger')
+                ->button('Reject', $this->reviewUrl . '?reject=1', 'danger')
             )
         );
+
+        return $message;
+    }
+
+    public function asEmailMessage(EmailRecipientInterface $recipient, string $transport = null): ?EmailMessage {
+        $message = EmailMessage::fromNotification($this, $recipient);
+        $message->getMessage()
+                ->htmlTemplate('emails/comment_notification.html.twig')
+                ->context(['comment' => $this->comment]);
 
         return $message;
     }
