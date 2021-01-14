@@ -6,9 +6,9 @@ tests:
 	@symfony console doctrine:fixtures:load -n
 	@symfony run bin/phpunit
 
-start: start-docker start-server start-worker
+start: start-docker start-server start-worker start-spa
 
-stop: stop-server-worker stop-docker
+stop: stop-spa stop-server-worker stop-docker
 
 restart: stop start
 
@@ -33,6 +33,22 @@ stop-server-worker:
 	$(call echo_title,Stop Workers and Web server)
 	@symfony server:stop
 
+start-spa:
+	$(call echo_title,Start SPA)
+	@cd spa; make start-spa; cd ..
+
+stop-spa:
+	$(call echo_title,Stop SPA)
+	@cd spa; make stop-spa; cd ..
+
+compile-spa:
+	$(call echo_title,Compile SPA)
+	@cd spa; make compile; cd ..
+
+open-spa:
+	$(call echo_title,Open SPA)
+	@cd spa; make open; cd ..
+
 message-failed-show:
 	$(call echo_title,Inspect failed messages)
 	@symfony console messenger:failed:show
@@ -56,6 +72,8 @@ connect-db:
 status:
 	$(call echo_title,Show status)
 	@symfony server:status
+	$(call echo_title,Show status SPA)
+	@cd spa; make status; cd ..
 
 log:
 	$(call echo_title,Show logs)
