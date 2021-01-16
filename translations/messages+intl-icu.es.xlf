@@ -17,6 +17,10 @@
         <source>View</source>
         <target>Ver</target>
       </trans-unit>
+      <trans-unit id="Dg2dPd6" resname="nb_of_comments">
+        <source>nb_of_comments</source>
+        <target>{count, plural, =0 {No hay ningún comentario.} =1 {Hay 1 comentario.} other {Hay # comentarios.}}</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
