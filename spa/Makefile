@@ -5,7 +5,7 @@ stop-spa:
 	@symfony server:stop
 
 compile:
-	@yarn encore dev
+	@API_ENDPOINT=`symfony var:export SYMFONY_DEFAULT_ROUTE_URL --dir=..` yarn encore dev
 
 open:
 	@symfony open:local
