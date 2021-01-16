@@ -16,11 +16,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Notifier\ChatterInterface;
-use Symfony\Component\Notifier\Message\ChatMessage;
 use Symfony\Component\Notifier\Notification\Notification;
 use Symfony\Component\Notifier\NotifierInterface;
-use Symfony\Component\Notifier\Recipient\Recipient;
-use Symfony\Component\Notifier\Transport;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Twig\Environment;
@@ -37,7 +34,14 @@ final class ConferenceController extends AbstractController {
     }
 
     /**
-     * @Route("/", name="homepage")
+     * @Route("/")
+     */
+    public function indexNoLocale() {
+        return $this->redirectToRoute('homepage', ['_locale' => 'en']);
+    }
+
+    /**
+     * @Route("/{_locale<%app.supported_locales%>}", name="homepage")
      */
     public function index(ChatterInterface $chatter): Response {
         $response = new Response($this->twig->render('conference/index.html.twig'));
@@ -47,7 +51,7 @@ final class ConferenceController extends AbstractController {
     }
 
     /**
-     * @Route("/conference/header", name="conference_header")
+     * @Route("/{_locale<%app.supported_locales%>}/conference/header", name="conference_header")
      */
     public function conferenceHeader(ConferenceRepository $repository): Response {
         $response = new Response($this->twig->render('conference/header.html.twig', [
@@ -59,7 +63,7 @@ final class ConferenceController extends AbstractController {
     }
 
     /**
-     * @Route("/conferences/{slug}", name="conference")
+     * @Route("/{_locale<%app.supported_locales%>}/conferences/{slug}", name="conference")
      */
     public function show(
         Request $request,
